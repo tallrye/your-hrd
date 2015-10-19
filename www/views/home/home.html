@@ -1,0 +1,18 @@
+<ion-view hide-nav-bar="true" view-title="Home" hide-back-button="true">
+	<div class="bar bar-header bar-positive">
+	  <h1 class="title">Home</h1>
+	 <button ng-click="logOut()" class="button button-calm">Logout</button>
+	</div>
+    <ion-content class="padding-left padding-right has-subheader">
+    	<div class="card">
+		  	<div class="item item-text-wrap">
+		    	<p>You've logged in as: {{ fullname }} from {{ company }}</p>
+		    	<br>
+		    	<div class="button-bar">
+      				<button ng-click="getPhoto()" class="button button-positive">Take Photo</button>
+      				<img ng-src="{{lastPhoto}}" style="max-width: 100%">
+		    	</div>
+		  	</div>
+		</div>
+    </ion-content>
+</ion-view>

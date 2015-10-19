@@ -1,9 +1,7 @@
 'Use Strict';
-angular.module('App').controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
+angular.module('App').controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, Camera, FURL, Utils) {
   	var ref = new Firebase(FURL);
   	
-
-
 	var ref = new Firebase(FURL + '/profile/' + $localStorage.userkey);
 
 	// Attach an asynchronous callback to read the data at our posts reference

@@ -9246,5 +9246,13 @@ a.button {
 .button-positive, .bar-positive {
   background-color: #35a1db !important; }
 
+.button-assertive {
+  background-color: #004578 !important;
+  border-color: #35a1db !important; }
+
 .hrdLogo {
-  width: 80%; }
+  width: 80%;
+  max-width: 300px; }
+
+.has-header.has-header-false {
+  top: inherit; }

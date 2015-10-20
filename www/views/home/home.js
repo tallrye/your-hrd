@@ -1,6 +1,5 @@
 'Use Strict';
 angular.module('App').controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, Camera, FURL, Utils) {
-  	var ref = new Firebase(FURL);
   	
 	var ref = new Firebase(FURL + '/profile/' + $localStorage.userkey);
 
@@ -13,25 +12,29 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 		console.log("The read failed: " + errorObject.code);
 	});
 
-
+	
   	$scope.logOut = function () {
       	Auth.logout();
       	$location.path("/login");
-  	}
+  	};
 
   	$scope.getPhoto = function() {
 	    Camera.getPicture().then(function(imageURI) {
-	      console.log(imageURI);
-	      $scope.lastPhoto = imageURI;
+	      	$scope.lastPhoto = imageURI;
 	    }, function(err) {
-	      console.err(err);
+	      	console.err(err);
 	    }, {
-	      quality: 75,
-	      targetWidth: 320,
-	      targetHeight: 320,
-	      saveToPhotoAlbum: false
+	      	quality: 75,
+	      	targetWidth: 320,
+	      	saveToPhotoAlbum: false,
+	      	correctOrientation: true
 	    });
-	  };
+  	};
+  
+  	$scope.setCertificate = function(certNo){
+  		$scope.show = certNo;
+  		$scope.searchForm.$setPristine();
+  	};
 
-}
-);
+  
+});

@@ -9246,6 +9246,9 @@ a.button {
 .button-positive, .bar-positive {
   background-color: #35a1db !important; }
 
+.positiveColor {
+  color: #35a1db !important; }
+
 .button-assertive {
   background-color: #004578 !important;
   border-color: #35a1db !important; }
@@ -9256,3 +9259,14 @@ a.button {
 
 .has-header.has-header-false {
   top: inherit; }
+
+.lineBottom {
+  border-bottom: 1px solid #f2f2f2;
+  line-height: 30px; }
+  .lineBottom h5 {
+    line-height: 30px;
+    margin-bottom: 0;
+    margin-top: 0; }
+
+.leftPad {
+  padding-left: 30px; }

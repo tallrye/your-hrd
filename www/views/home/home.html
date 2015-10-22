@@ -1,27 +1,193 @@
 <ion-view hide-nav-bar="true" view-title="Home" hide-back-button="true">
     <div class="bar bar-header bar-positive">
-  	   <a ng-href="#/profile" class="button button-calm">My Profile</a>
+  	   <a ng-href="#/profile" class="button button-calm"> My Profile</a>
        <h1 class="title">Home</h1>
-       <button ng-click="logOut()" class="button button-calm">Logout</button>
+       <button ng-click="logOut()" class="button button-calm"> Logout</button>
     </div>
     <ion-content class="padding-left padding-right has-header">
-    	 <div class="card">
-	  	   <div class="item item-text-wrap">
-  		    	<p>You've logged in as: {{ fullname }} from {{ company }}</p>
-  		    	<br>
-  		    	<div class="button-bar">
-        				<button ng-click="getPhoto()" class="button button-positive">Take Photo</button>
-  		    	</div>
-		  	</div>
-		  </div>
-	    <img ng-src="{{lastPhoto}}" style="max-width: 100%">
-      <form name="searchForm" ng-submit="setCertificate(certificate)">
-	      <label class="item item-input item-floating-label">
-            <span class="input-label">Certificate Number</span>
-            <input name="certificate" type="text" ng-model="certificate" placeholder="Certificate Number" required maxlength="11" autocomplete="off" value="">
-        </label>
-        <button type="submit" class="button button-block button-assertive">Search</button>
-      </form>
-      <div ng-show="show">You've searched {{ show }} </div>
+       <div class="searchFeature" ng-hide="showDiamond == false || showJewellery == false">
+    	 <!-- <div class="searchFeature" ng-hide="showSearch == true"> -->
+         <div class="card">
+            <div class="item item-text-wrap">
+               <p>You've logged in as: {{ fullname }} from {{ company }}</p>
+               <br>
+               <div class="button-bar">
+                   <button ng-click="getPhoto()" class="button button-large button-positive">Take Photo</button>
+               </div>
+           </div>
+         </div>
+         <img ng-src="{{lastPhoto}}" style="max-width: 100%">
+         <form name="searchForm" ng-submit="setCertificate(certificate)">
+           <label class="item item-input item-floating-label">
+               <span class="input-label">Certificate Number</span>
+               <input name="certificate" type="text" ng-model="certificate" placeholder="Certificate Number" required maxlength="11" autocomplete="off" value="">
+           </label>
+           <button type="submit" class="button button-block button-assertive">Search</button>
+         </form>
+       </div>
+      <div class="padding-top" ng-hide="showDiamond == true">
+          <button ng-click="reload()" class="button-small button-outline button button-calm ion-arrow-left-c icon-left">Back to Search</button>
+          <div class="row ">
+            <div class="col">
+                <h3>HRD Antwerp Diamond Certificate</h3>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Report Number:</h5></div>
+            <div class="col lineBottom">10011956014</div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Report Type:</h5> </div>
+            <div class="col lineBottom">Certificate</div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Date of Issue:</h5></div>
+            <div class="col lineBottom" id="dateOfIssue"></div>
+          </div>
+          <div class="row ">
+            <div class="col">
+                <p><em>*The stone in accordance with the above mentioned number has been identified as a natural gem diamond.</em></p>
+                <br>
+                <h4 class="positiveColor">Results:</h4>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Shape:</h5></div>
+            <div class="col lineBottom" id="shapeCode"></div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Carat (weight):</h5></div>
+            <div class="col lineBottom" id="carat"></div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Colour Grade:</h5></div>
+            <div class="col lineBottom" id="colourGrade"></div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Clarity Grade:</h5></div>
+            <div class="col lineBottom" id="clarityCode"></div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Cut:</h5></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Proportions:</h5></div>
+            <div class="col lineBottom" id="proportionsDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Polish:</h5></div>
+            <div class="col lineBottom" id="polishDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Symmetry:</h5></div>
+            <div class="col lineBottom" id="symmetryDescription"></div>
+          </div>
+
+          <div class="row ">
+            <div class="col">
+                <br>
+                <h4 class="positiveColor">Additional information:</h4>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Fluorescence:</h5></div>
+            <div class="col lineBottom" id="fluorescenceDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Measurements:</h5></div>
+            <div class="col lineBottom" id="measurements"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Girdle:</h5></div>
+            <div class="col lineBottom" id="girdleDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Culet:</h5></div>
+            <div class="col lineBottom" id="culetDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Total Depth:</h5></div>
+            <div class="col lineBottom" id="totalDepthDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Table Width:</h5></div>
+            <div class="col lineBottom" id="tableWidthDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Crown Height (β):</h5></div>
+            <div class="col lineBottom" id="crownHeightDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Pavilion Depth (α):</h5></div>
+            <div class="col lineBottom" id="pavilionDepthDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Length Halves Crown:</h5></div>
+            <div class="col lineBottom" id="lengthHalvesCrownDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Length Halves Pavilion:</h5></div>
+            <div class="col lineBottom" id="lengthHalvesPavilionDescription"></div>
+          </div>
+          <div class="row ">
+            <div class="col leftPad lineBottom"><h5>Sum α &amp; β:</h5></div>
+            <div class="col lineBottom" id="sumabDescription"></div>
+          </div>
+
+          <div class="row ">
+            <div class="col">
+                <br>
+                <h4 class="positiveColor">Remarks:</h4>
+                <p id="remark"><em></em></p>
+                <br>
+                <h4 class="positiveColor">Inscription:</h4>
+                <p id="inscription"><em></em></p>
+            </div>
+          </div>
+
+          
+          <div style="height:100px;"></div>
+      </div>
+      <div class="padding-top" ng-hide="showJewellery == true">
+          <button ng-click="reload()" class="button-small button-outline button button-calm ion-arrow-left-c icon-left">Back to Search</button>
+          <div class="row ">
+            <div class="col">
+                <h3>HRD Antwerp Jewellery Certificate</h3>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Report Number:</h5></div>
+            <div class="col lineBottom">10011956014</div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Report Type:</h5> </div>
+            <div class="col lineBottom">Jewellery Report</div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom"><h5>Amount of diamonds:</h5> </div>
+            <div class="col lineBottom" id="amountDiamonds"></div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom" id="description"></div>
+          </div>
+          <div id="jewelleryOutput"></div>
+          <div class="row ">
+            <div class="col">
+                <br>
+                <h4 class="positiveColor">Remarks:</h4>
+                <p id="jremarks"><em></em></p>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col lineBottom" id="pdfurl" style="display:none;">
+              <a ng-click="download()" class="button button-royal icon ion-document icon-left" >Download PDF</a>
+            </div>
+
+          </div>
+         
+          
+          
+          <div style="height:100px;"></div>
+      </div>
     </ion-content>
 </ion-view>

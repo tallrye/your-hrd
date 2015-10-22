@@ -39,27 +39,29 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
   		$.getJSON(yql, function (data) {
 			var xmlDoc = $.parseXML(data.results[0]),
 				$xml = $( xmlDoc ),
-			  	ShapeCode = $xml.find( "ShapeCode" ).text();
-			  	DateOfIssue = $xml.find( "DateOfIssue" ).text();
-			  	Carat = $xml.find( "Carat" ).text();
-			  	ColourGrade = $xml.find( "ColourDescription" ).text();
-			  	ClarityDescription = $xml.find( "ClarityDescription" ).text();
-			  	ProportionsDescription = $xml.find( "ProportionsDescription" ).text();
-			  	PolishDescription = $xml.find( "PolishDescription" ).text();
-			  	SymmetryDescription = $xml.find( "SymmetryDescription" ).text();
-			  	FluorescenceDescription = $xml.find( "FluorescenceDescription" ).text();
-			  	Measurements = $xml.find( "Measurements" ).text();
-			  	GirdleDescription = $xml.find( "GirdleDescription" ).text();
-			  	CuletDescription = $xml.find( "CuletDescription" ).text();
-			  	TotalDepthDescription = $xml.find( "TotalDepthDescription" ).text();
-			  	TableWidthDescription = $xml.find( "TableWidthDescription" ).text();
-			  	CrownHeightDescription = $xml.find( "CrownHeightDescription" ).text();
-			  	PavilionDepthDescription = $xml.find( "PavilionDepthDescription" ).text();
-			  	LengthHalvesCrownDescription = $xml.find( "LengthHalvesCrownDescription" ).text();
-			  	LengthHalvesPavilionDescription = $xml.find( "LengthHalvesPavilionDescription" ).text();
-			  	SumabDescription = $xml.find( "SumabDescription" ).text();
-			  	Inscription = $xml.find( "Inscription" ).text();
+			  	ReportNumber = $xml.find( "ReportNumber" ).text(),
+			  	ShapeCode = $xml.find( "ShapeCode" ).text(),
+			  	DateOfIssue = $xml.find( "DateOfIssue" ).text(),
+			  	Carat = $xml.find( "Carat" ).text(),
+			  	ColourGrade = $xml.find( "ColourDescription" ).text(),
+			  	ClarityDescription = $xml.find( "ClarityDescription" ).text(),
+			  	ProportionsDescription = $xml.find( "ProportionsDescription" ).text(),
+			  	PolishDescription = $xml.find( "PolishDescription" ).text(),
+			  	SymmetryDescription = $xml.find( "SymmetryDescription" ).text(),
+			  	FluorescenceDescription = $xml.find( "FluorescenceDescription" ).text(),
+			  	Measurements = $xml.find( "Measurements" ).text(),
+			  	GirdleDescription = $xml.find( "GirdleDescription" ).text(),
+			  	CuletDescription = $xml.find( "CuletDescription" ).text(),
+			  	TotalDepthDescription = $xml.find( "TotalDepthDescription" ).text(),
+			  	TableWidthDescription = $xml.find( "TableWidthDescription" ).text(),
+			  	CrownHeightDescription = $xml.find( "CrownHeightDescription" ).text(),
+			  	PavilionDepthDescription = $xml.find( "PavilionDepthDescription" ).text(),
+			  	LengthHalvesCrownDescription = $xml.find( "LengthHalvesCrownDescription" ).text(),
+			  	LengthHalvesPavilionDescription = $xml.find( "LengthHalvesPavilionDescription" ).text(),
+			  	SumabDescription = $xml.find( "SumabDescription" ).text(),
+			  	Inscription = $xml.find( "Inscription" ).text(),
 			  	Remark = $xml.find( "Remark" ).text();
+			  	$('#reportNumber').html(ReportNumber);
 			  	$('#dateOfIssue').html(DateOfIssue);
 			  	$('#certNo').html(certNo);
 			  	$('#shapeCode').html(ShapeCode);
@@ -93,6 +95,7 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  	Description = $xml.find( "Description > Value" ).text(),
 			  	AmountDiamonds = $xml.find( "AmountDiamonds > Value" ).text(),
 			  	PdfUrl = $xml.find( "PdfUrl" ).text(),
+			  	ReportNumber = $xml.find( "ReportNumber" ).text(),
 			  	Remarks = $xml.find( "Remarks > Value" ).text();
 			  	var jewelleryOutput = "";
 			  	$xml.find( "Details" ).children().each(function(){
@@ -112,6 +115,7 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  	
 			  	$('#amountDiamonds').html(AmountDiamonds);
 			  	$('#jremarks').html(Remarks);
+			  	$('#jReportNumber').html(ReportNumber);
 			  	if(PdfUrl != ""){
 			  		$('#pdfurl').attr('data-url', PdfUrl);
 			  		$('#pdfurl').fadeIn();

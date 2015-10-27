@@ -39,7 +39,11 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
   		$.getJSON(yql, function (data) {
 			var xmlDoc = $.parseXML(data.results[0]),
 				$xml = $( xmlDoc ),
-			  	ReportNumber = $xml.find( "ReportNumber" ).text(),
+			  	ReportNumber = $xml.find( "ReportNumber" ).text();
+			  	if(ReportNumber == ""){
+			  		alert('Record not found!');
+			  		$window.location.reload();
+			  	}
 			  	ShapeCode = $xml.find( "ShapeCode" ).text(),
 			  	DateOfIssue = $xml.find( "DateOfIssue" ).text(),
 			  	Carat = $xml.find( "Carat" ).text(),

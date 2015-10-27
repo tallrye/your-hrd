@@ -44,7 +44,6 @@ angular.module('App').factory('Auth', function(FURL, $firebaseAuth, $firebaseArr
 
     logout: function() {
       auth.$unauth();
-			console.log("Usuario Sale.");
     },
 
 		resetpassword: function(user) {

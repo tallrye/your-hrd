@@ -11,14 +11,11 @@ angular.module('App').controller('loginController', function ($scope, $state,$co
       //console.log("id del usuario:" + JSON.stringify(authData));
 
       ref.child('profile').orderByChild("id").equalTo(authData.uid).on("child_added", function(snapshot) {
-        console.log(snapshot.key());
         userkey = snapshot.key();
         var obj = $firebaseObject(ref.child('profile').child(userkey));
 
         obj.$loaded()
           .then(function(data) {
-            //console.log(data === obj); // true
-            //console.log(obj.email);
             $localStorage.email = obj.email;
             $localStorage.userkey = userkey;
 

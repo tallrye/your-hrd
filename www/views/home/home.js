@@ -1,7 +1,8 @@
 'Use Strict';
-angular.module('App').controller('homeController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$window,$ionicPopup, $firebaseObject, Auth, Camera, FURL, Utils) {
+angular.module('App').controller('homeController', function ($scope, $state,$cordovaOauth, $firebaseArray, $localStorage, $location,$http,$window,$ionicPopup, $firebaseObject, Auth, Camera, FURL, Utils) {
   	
 	var ref = new Firebase(FURL + '/profile/' + $localStorage.userkey);
+	var baseRef = new Firebase(FURL);
 
 	// Attach an asynchronous callback to read the data at our posts reference
 	ref.on("value", function(snapshot) {
@@ -34,16 +35,25 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
   	$scope.reload = function(){
   		$window.location.reload();
   	}
+  	$scope.createLog = function(certificate) {
+      var log = {
+		certNo: certificate,
+        userkey: $localStorage.userkey,
+      };
+
+      var logRef = $firebaseArray(baseRef.child('log'));
+      return logRef.$add(log).then(function(baseRef) {
+			  var id = baseRef.key();
+			  //console.log("added record with id " + id);
+			  logRef.$indexFor(id); // returns location in the array
+			});
+    },
   	$scope.getDiamond = function(yql, certNo){
   		$scope.showDiamond = false;
   		$.getJSON(yql, function (data) {
 			var xmlDoc = $.parseXML(data.results[0]),
 				$xml = $( xmlDoc ),
-			  	ReportNumber = $xml.find( "ReportNumber" ).text();
-			  	if(ReportNumber == ""){
-			  		alert('Record not found!');
-			  		$window.location.reload();
-			  	}
+			  	ReportNumber = $xml.find( "ReportNumber" ).text(),
 			  	ShapeCode = $xml.find( "ShapeCode" ).text(),
 			  	DateOfIssue = $xml.find( "DateOfIssue" ).text(),
 			  	Carat = $xml.find( "Carat" ).text(),
@@ -65,6 +75,11 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  	SumabDescription = $xml.find( "SumabDescription" ).text(),
 			  	Inscription = $xml.find( "Inscription" ).text(),
 			  	Remark = $xml.find( "Remark" ).text();
+		  	if(ReportNumber == ""){
+		  		alert('Record not found!');
+		  		$window.location.reload();
+		  		return;
+		  	}else{
 			  	$('#reportNumber').html(ReportNumber);
 			  	$('#dateOfIssue').html(DateOfIssue);
 			  	$('#certNo').html(certNo);
@@ -88,7 +103,10 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  	$('#sumabDescription').html(SumabDescription);
 			  	$('#inscription').html(Inscription);
 			  	$('#remark').html(Remark);
+		    	$scope.createLog(certNo);
+		  	}
 		});
+		
   	}
 
   	$scope.getJewellery = function(yql, certNo){
@@ -127,6 +145,7 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  	$('#description').html('<strong>Description: </strong>' + Description);
 			  	
 		});
+		$scope.createLog(certNo);
   	}
 
   	$scope.download = function(){

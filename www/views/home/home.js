@@ -1,5 +1,5 @@
 'Use Strict';
-angular.module('App').controller('homeController', function ($scope, $state,$cordovaOauth, $firebaseArray, $localStorage, $location,$http,$window,$ionicPopup, $firebaseObject, Auth, Camera, FURL, Utils) {
+angular.module('App').controller('homeController', function ($scope, $ionicScrollDelegate, $state,$cordovaOauth, $firebaseArray, $localStorage, $location,$http,$window,$ionicPopup, $firebaseObject, Auth, $cordovaCamera, FURL, Utils) {
   	
 	var ref = new Firebase(FURL + '/profile/' + $localStorage.userkey);
 	var baseRef = new Firebase(FURL);
@@ -14,27 +14,37 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 	});
 	$scope.showDiamond = true;
 	$scope.showJewellery = true;
+	$scope.showPhoto = false;
 	
   	$scope.logOut = function () {
       	Auth.logout();
       	$location.path("/login");
-  	};
+  	}
 
   	$scope.getPhoto = function() {
-	    Camera.getPicture().then(function(imageURI) {
-	      	$scope.lastPhoto = imageURI;
+  		var options = {
+	      	quality : 75, 
+            destinationType : Camera.DestinationType.DATA_URL, 
+            sourceType : Camera.PictureSourceType.CAMERA, 
+            allowEdit : true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 300,
+            targetHeight: 300,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: false
+	    }
+	    $cordovaCamera.getPicture(options).then(function(imageURI) {
+	      	$scope.lastPhoto = "data:image/jpeg;base64," + imageURI;
+	      	$scope.showPhoto = true;
 	    }, function(err) {
-	      	console.err(err);
-	    }, {
-	      	quality: 75,
-	      	targetWidth: 320,
-	      	saveToPhotoAlbum: false,
-	      	correctOrientation: true
+	      	
 	    });
-  	};
-  	$scope.reload = function(){
-  		$window.location.reload();
   	}
+
+  	$scope.reload = function(){
+  		$state.go($state.current, {}, {reload: true});
+  	}
+
   	$scope.createLog = function(certificate) {
       var log = {
 		certNo: certificate,
@@ -47,9 +57,11 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  //console.log("added record with id " + id);
 			  logRef.$indexFor(id); // returns location in the array
 			});
-    },
+    }
+
   	$scope.getDiamond = function(yql, certNo){
   		$scope.showDiamond = false;
+  		$ionicScrollDelegate.scrollTop();
   		$.getJSON(yql, function (data) {
 			var xmlDoc = $.parseXML(data.results[0]),
 				$xml = $( xmlDoc ),
@@ -77,7 +89,7 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  	Remark = $xml.find( "Remark" ).text();
 		  	if(ReportNumber == ""){
 		  		alert('Record not found!');
-		  		$window.location.reload();
+		  		$state.go($state.current, {}, {reload: true});
 		  		return;
 		  	}else{
 			  	$('#reportNumber').html(ReportNumber);
@@ -103,6 +115,7 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  	$('#sumabDescription').html(SumabDescription);
 			  	$('#inscription').html(Inscription);
 			  	$('#remark').html(Remark);
+			  	
 		    	$scope.createLog(certNo);
 		  	}
 		});
@@ -111,6 +124,7 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 
   	$scope.getJewellery = function(yql, certNo){
   		$scope.showJewellery = false;
+  		$ionicScrollDelegate.scrollTop();
   		$.getJSON(yql, function (data) {
 			var xmlDoc = $.parseXML(data.results[0]),
 				$xml = $( xmlDoc ),
@@ -120,29 +134,36 @@ angular.module('App').controller('homeController', function ($scope, $state,$cor
 			  	ReportNumber = $xml.find( "ReportNumber" ).text(),
 			  	Remarks = $xml.find( "Remarks > Value" ).text();
 			  	var jewelleryOutput = "";
-			  	$xml.find( "Details" ).children().each(function(){
-			  		var $this = $(this);
-		  			var quantity = $this.find('Quantity').text();
-		  			var shape = $this.find('Shape').text();
-		  			var carat = $this.find('Carat').text();
-		  			var colourGrade = $this.find('ColourGrade').text();
-		  			var measurements = $this.find('Measurements').text();
-		  			var clarityGrade = $this.find('ClarityGrade').text();
-		  			var symmetry = $this.find('Symmetry').text();
-		  			var setting = $this.find('Setting').text();
-			  		jewelleryOutput = jewelleryOutput + '<div class="row "><div class="col"><br><h4 class="positiveColor">'+quantity+' Diamond(s)</h4></div></div> <div class="row "><div class="col leftPad lineBottom"><h5>Shape:</h5></div><div class="col lineBottom">'+shape+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Carat (weight):</h5></div><div class="col lineBottom">'+carat+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Measurements:</h5></div><div class="col lineBottom">'+measurements+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Colour Grade:</h5></div><div class="col lineBottom">'+colourGrade+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Clarity  Grade:</h5></div><div class="col lineBottom">'+clarityGrade+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Symmetry:</h5></div><div class="col lineBottom">'+symmetry+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Setting:</h5></div><div class="col lineBottom">'+setting+'</div></div>' ;
-		  			$('#jewelleryOutput').html(jewelleryOutput);
-			  	});
-			  	
-			  	
-			  	$('#amountDiamonds').html(AmountDiamonds);
-			  	$('#jremarks').html(Remarks);
-			  	$('#jReportNumber').html(ReportNumber);
-			  	if(PdfUrl != ""){
-			  		$('#pdfurl').attr('data-url', PdfUrl);
-			  		$('#pdfurl').fadeIn();
+			  	if(ReportNumber == ""){
+			  		alert('Record not found!');
+			  		$state.go($state.current, {}, {reload: true});
+			  		return;
+			  	}else{
+				  	$xml.find( "Details" ).children().each(function(){
+				  		var $this = $(this);
+			  			var quantity = $this.find('Quantity').text();
+			  			var shape = $this.find('Shape').text();
+			  			var carat = $this.find('Carat').text();
+			  			var colourGrade = $this.find('ColourGrade').text();
+			  			var measurements = $this.find('Measurements').text();
+			  			var clarityGrade = $this.find('ClarityGrade').text();
+			  			var symmetry = $this.find('Symmetry').text();
+			  			var setting = $this.find('Setting').text();
+				  		jewelleryOutput = jewelleryOutput + '<div class="row "><div class="col"><br><h4 class="positiveColor">'+quantity+' Diamond(s)</h4></div></div> <div class="row "><div class="col leftPad lineBottom"><h5>Shape:</h5></div><div class="col lineBottom">'+shape+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Carat (weight):</h5></div><div class="col lineBottom">'+carat+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Measurements:</h5></div><div class="col lineBottom">'+measurements+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Colour Grade:</h5></div><div class="col lineBottom">'+colourGrade+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Clarity  Grade:</h5></div><div class="col lineBottom">'+clarityGrade+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Symmetry:</h5></div><div class="col lineBottom">'+symmetry+'</div></div><div class="row "><div class="col leftPad lineBottom"><h5>Setting:</h5></div><div class="col lineBottom">'+setting+'</div></div>' ;
+			  			$('#jewelleryOutput').html(jewelleryOutput);
+				  	});
+				  	
+				  	
+				  	$('#amountDiamonds').html(AmountDiamonds);
+				  	$('#jremarks').html(Remarks);
+				  	$('#jReportNumber').html(ReportNumber);
+				  	if(PdfUrl != ""){
+				  		$('#pdfurl').attr('data-url', PdfUrl);
+				  		$('#pdfurl').fadeIn();
+				  	}
+				  	$('#description').html('<strong>Description: </strong>' + Description);
+
 			  	}
-			  	$('#description').html('<strong>Description: </strong>' + Description);
 			  	
 		});
 		$scope.createLog(certNo);

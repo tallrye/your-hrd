@@ -1,4 +1,4 @@
-<ion-view hide-nav-bar="true" view-title="Home" hide-back-button="true">
+<ion-view hide-nav-bar="true" cache-view="false" view-title="Home" hide-back-button="true">
     <div class="bar bar-header bar-positive">
   	   <a ng-href="#/profile" class="button button-calm"> My Profile</a>
        <h1 class="title">Home</h1>
@@ -12,18 +12,22 @@
     	 <!-- <div class="searchFeature" ng-hide="showSearch == true"> -->
          <div class="card">
             <div class="item item-text-wrap">
-               <p>You've logged in as: {{ fullname }} from {{ company }}</p>
-               <br>
                <div class="button-bar">
-                   <button ng-click="getPhoto()" class="button button-large button-positive">Take Photo</button>
+                   <button ng-click="getPhoto()" class="button button-positive">Take Photo</button>
                </div>
            </div>
          </div>
-         <img ng-src="{{lastPhoto}}" style="max-width: 100%">
+         <div ng-hide="showPhoto == false">
+          <img ng-show="lastPhoto !== undefined" ng-src="{{lastPhoto}}" class="rotateMe" style="max-width: 100%;">
+          <br><br>
+          <br><br>
+          <br><br>
+         </div>
+
          <form name="searchForm" ng-submit="setCertificate(certificate)">
            <label class="item item-input item-floating-label">
                <span class="input-label">Certificate Number</span>
-               <input name="certificate" type="text" ng-model="certificate" placeholder="Certificate Number" required maxlength="11" autocomplete="off" value="">
+               <input name="certificate" id="searchField" type="text" ng-model="certificate" placeholder="Certificate Number" required maxlength="11" autocomplete="off" value="">
            </label>
            <button type="submit" class="button button-block button-assertive">Search</button>
          </form>

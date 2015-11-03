@@ -9270,3 +9270,13 @@ a.button {
 
 .leftPad {
   padding-left: 30px; }
+
+.rotateMe {
+  transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -o-transform: rotate(90deg); }
+
+.photoContainer {
+  height: auto; }

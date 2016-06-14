@@ -24,6 +24,8 @@ angular.module('App').factory('Auth', function(FURL, $firebaseAuth, $firebaseArr
     },
 
     login: function(user) {
+      window.localStorage.setItem("username", user.email);
+      window.localStorage.setItem("password", user.password);
       return auth.$authWithPassword(
         {email: user.email, password: user.password}
       );
@@ -44,8 +46,10 @@ angular.module('App').factory('Auth', function(FURL, $firebaseAuth, $firebaseArr
 
     logout: function() {
       auth.$unauth();
+      window.localStorage.removeItem("username");
+      window.localStorage.removeItem("password");
     },
-
+    
 		resetpassword: function(user) {
 			return auth.$resetPassword({
 				  email: user.email

@@ -26,9 +26,8 @@ $stateProvider
       url: '/profile',
       templateUrl: 'views/profile/profile.html',
       controller:'profileController'
-    })
-    ;
-$urlRouterProvider.otherwise("/login");
+    });
+    $urlRouterProvider.otherwise("/home");
 })
 // Changue this for your Firebase App URL.
 .constant('FURL', 'https://yourhrd.firebaseio.com/')

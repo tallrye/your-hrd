@@ -1,4 +1,6 @@
 <ion-view hide-nav-bar="true" cache-view="false" view-title="Home" hide-back-button="true">
+      <script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+    
     <div class="bar bar-header bar-positive">
   	   <a ng-href="#/profile" class="button button-calm"> My Profile</a>
        <h1 class="title">Home</h1>
@@ -15,13 +17,23 @@
                <div class="button-bar">
                    <button ng-click="getPhoto()" class="button button-positive">Take Photo</button>
                </div>
+               <br>
+               <div class="button-bar">
+                  <button ng-click="pickImage()" class="button button-positive">Select From Album</button>
+               </div>
            </div>
          </div>
          <div ng-hide="showPhoto == false">
-          <img ng-show="lastPhoto !== undefined" ng-src="{{lastPhoto}}" class="rotateMe" style="max-width: 100%;">
-          <br><br>
-          <br><br>
-          <br><br>
+            <img ng-show="lastPhoto !== undefined" ng-src="{{lastPhoto}}" class="rotateMe" style="max-width: 100%;">
+            <br><br>
+            <br><br>
+            <br><br>
+         </div>
+         <div ng-hide="showPhotoPick == false">
+            <img ng-show="lastPhotoPick !== undefined" ng-src="{{lastPhotoPick}}" class="rotateMeTwo" style="max-width: 100%;">
+            <br><br>
+            <br><br>
+            <br><br>
          </div>
 
          <form name="searchForm" ng-submit="setCertificate(certificate)">

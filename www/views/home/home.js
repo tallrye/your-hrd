@@ -1,9 +1,14 @@
 'Use Strict';
-angular.module('App').controller('homeController', function ($scope, $ionicScrollDelegate, $state,$cordovaOauth, $firebaseArray, $localStorage, $location,$http,$window,$ionicPopup, $firebaseObject, Auth, $cordovaCamera, FURL, Utils) {
+angular.module('App').controller('homeController', function ($scope, $ionicScrollDelegate, $state,$cordovaOauth, $firebaseArray, $localStorage, $location,$http,$window,$ionicPopup, $firebaseObject, Auth, $cordovaCamera, $cordovaImagePicker, FURL, Utils) {
   	
 	var ref = new Firebase(FURL + '/profile/' + $localStorage.userkey);
 	var baseRef = new Firebase(FURL);
-
+  	
+  	if(window.localStorage.getItem("username") !== null && window.localStorage.getItem("password") !== null) {
+        console.log('user is logged in');
+    } else {
+        $state.go('login');
+    }
 	// Attach an asynchronous callback to read the data at our posts reference
 	ref.on("value", function(snapshot) {
   		$scope.company = snapshot.val().company;
@@ -18,27 +23,49 @@ angular.module('App').controller('homeController', function ($scope, $ionicScrol
 	
   	$scope.logOut = function () {
       	Auth.logout();
+		window.localStorage.removeItem("username");
+      	window.localStorage.removeItem("password");
       	$location.path("/login");
   	}
 
   	$scope.getPhoto = function() {
   		var options = {
-	      	quality : 75, 
-            destinationType : Camera.DestinationType.DATA_URL, 
+	      	quality : 100, 
+            destinationType : Camera.DestinationType.FILE_URL, 
             sourceType : Camera.PictureSourceType.CAMERA, 
-            allowEdit : true,
+            allowEdit : false,
             encodingType: Camera.EncodingType.JPEG,
-            targetWidth: 300,
-            targetHeight: 300,
+            targetWidth: 2000,
+            targetHeight: 2000,
             popoverOptions: CameraPopoverOptions,
-            saveToPhotoAlbum: false
+            saveToPhotoAlbum: true
 	    }
 	    $cordovaCamera.getPicture(options).then(function(imageURI) {
-	      	$scope.lastPhoto = "data:image/jpeg;base64," + imageURI;
+	      	$scope.lastPhoto =  imageURI;
+	      	$scope.showPhotoPick = false;
 	      	$scope.showPhoto = true;
 	    }, function(err) {
 	      	
 	    });
+  	}
+  	$scope.pickImage = function(source) { 
+	  	var options = {
+		   	quality: 100,
+		    destinationType: Camera.DestinationType.FILE_URI,
+		    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+		    allowEdit : false,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 2000,
+            targetHeight: 2000,
+            popoverOptions: CameraPopoverOptions, 
+	  	};
+	  	$cordovaCamera.getPicture(options).then(function (imageURI) {
+	      	$scope.lastPhotoPick = imageURI;
+      		$scope.showPhotoPick = true;
+      		$scope.showPhoto = false;
+	    }, function(error) {
+	      // error getting photos
+    	});
   	}
 
   	$scope.reload = function(){

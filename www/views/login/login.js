@@ -2,7 +2,7 @@
 angular.module('App').controller('loginController', function ($scope, $state,$cordovaOauth, $localStorage, $location,$http,$ionicPopup, $firebaseObject, Auth, FURL, Utils) {
   var ref = new Firebase(FURL);
   var userkey = "";
-  
+
   $scope.signIn = function (user) {
     if(angular.isDefined(user)){
     Utils.show();
@@ -21,7 +21,6 @@ angular.module('App').controller('loginController', function ($scope, $state,$co
 
               Utils.hide();
               $state.go('home');
-              console.log("Starter page","Home");
 
           })
           .catch(function(error) {
